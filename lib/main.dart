@@ -36,11 +36,15 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController messageTextController = TextEditingController();
 
   static const String _kStrings = 'FastCampus Flutter ChatGPT';
+
   String get _currentString => _kStrings;
+
+  ScrollController scrollController = ScrollController();
 
   @override
   void dispose() {
     messageTextController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -60,11 +64,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (context) {
                       return [
                         const PopupMenuItem(
-                            child: ListTile(title: Text('History'))),
+                          child: ListTile(
+                            title: Text('History'),
+                          ),
+                        ),
                         const PopupMenuItem(
-                            child: ListTile(title: Text('Settings'))),
+                          child: ListTile(
+                            title: Text('Settings'),
+                          ),
+                        ),
                         const PopupMenuItem(
-                            child: ListTile(title: Text('New chat'))),
+                          child: ListTile(
+                            title: Text('New chat'),
+                          ),
+                        ),
                       ];
                     },
                   ),
@@ -72,8 +85,48 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                 child: Container(
-                  color: Colors.blue,
-                  child: const Center(child: Text(_kStrings)),
+                  // color: Colors.blue,
+                  // child: const Center(child: Text(_kStrings)),
+                  child: ListView.builder(
+                    itemCount: 100,
+                    itemBuilder: (context, index) {
+                      if (index % 2 == 0) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Row(
+                            children: [
+                              CircleAvatar(),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('User'),
+                                    Text('message'),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                      return const Row(
+                        children: [
+                          CircleAvatar(backgroundColor: Colors.teal),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('ChatGPT'),
+                                Text('OpenAI OpenAI OpenAI OpenAI'),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
               Dismissible(
@@ -86,7 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 background: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Text('New chat')],
+                  children: [
+                    Text('New chat'),
+                  ],
                 ),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
